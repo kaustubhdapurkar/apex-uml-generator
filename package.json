@@ -1,0 +1,11 @@
+{
+  "name": "apex-uml-generator",
+  "version": "1.0.0",
+  "description": "A UML diagram generator for Salesforce Apex classes",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Kaustubh Dapurkar",
+  "license": "ISC"
+}
