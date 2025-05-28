@@ -5,7 +5,9 @@
   "scripts": {
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
-    "lint": "vue-cli-service lint"
+    "lint": "vue-cli-service lint",
+    "lint:fix": "eslint --ext .js,.ts,.vue src --fix",
+    "format": "prettier --write \"src/**/*.{js,ts,vue,scss,css,html}\""
   },
   "dependencies": {
     "core-js": "^3.8.3",
@@ -14,23 +16,14 @@
   "devDependencies": {
     "@babel/core": "^7.12.16",
     "@babel/eslint-parser": "^7.12.16",
+    "@typescript-eslint/eslint-plugin": "^8.33.0",
+    "@typescript-eslint/parser": "^8.33.0",
     "@vue/cli-plugin-babel": "~5.0.0",
     "@vue/cli-plugin-eslint": "~5.0.0",
-    "@vue/cli-service": "~5.0.0"
-  },
-  "eslintConfig": {
-    "root": true,
-    "env": {
-      "node": true
-    },
-    "extends": [
-      "plugin:vue/vue3-essential",
-      "eslint:recommended"
-    ],
-    "parserOptions": {
-      "parser": "@babel/eslint-parser"
-    },
-    "rules": {}
+    "@vue/cli-service": "~5.0.0",
+    "@vue/eslint-config-typescript": "^14.5.0",
+    "eslint": "^9.27.0",
+    "eslint-plugin-vue": "^10.1.0"
   },
   "browserslist": [
     "> 1%",
