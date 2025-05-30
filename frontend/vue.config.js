@@ -8,5 +8,14 @@ module.exports = defineConfig({
     index: {
       entry: path.resolve(__dirname, 'src/main.ts')
     }
+  },
+  css: {
+    loaderOptions: {
+      css: {
+        modules: {
+          localIdentName: '[local]_[hash:base64:8]'
+        }
+      }
+    }
   }
 })

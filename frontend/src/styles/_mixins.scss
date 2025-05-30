@@ -1,0 +1,75 @@
+@use 'variables' as *;
+
+// Flexbox
+@mixin flex-center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+@mixin flex-between {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+// Responsive
+@mixin respond-to($breakpoint) {
+  @if map-has-key($breakpoints, $breakpoint) {
+    @media (min-width: map-get($breakpoints, $breakpoint)) {
+      @content;
+    }
+  }
+}
+
+// Typography
+@mixin text-base {
+  font-family: $font-family-base;
+  font-size: map-get($font-sizes, 'base');
+  line-height: map-get($line-heights, 'normal');
+  font-weight: map-get($font-weights, 'normal');
+}
+
+@mixin heading-1 {
+  font-family: $font-family-base;
+  font-size: map-get($font-sizes, '3xl');
+  line-height: map-get($line-heights, 'tight');
+  font-weight: map-get($font-weights, 'bold');
+  color: map-get($colors, 'text');
+}
+
+@mixin heading-2 {
+  font-family: $font-family-base;
+  font-size: map-get($font-sizes, '2xl');
+  line-height: map-get($line-heights, 'tight');
+  font-weight: map-get($font-weights, 'semibold');
+  color: map-get($colors, 'text');
+}
+
+@mixin heading-3 {
+  font-family: $font-family-base;
+  font-size: map-get($font-sizes, 'xl');
+  line-height: map-get($line-heights, 'tight');
+  font-weight: map-get($font-weights, 'semibold');
+  color: map-get($colors, 'text');
+}
+
+@mixin text-sm {
+  font-family: $font-family-base;
+  font-size: map-get($font-sizes, 'sm');
+  line-height: map-get($line-heights, 'normal');
+}
+
+@mixin text-xs {
+  font-family: $font-family-base;
+  font-size: map-get($font-sizes, 'xs');
+  line-height: map-get($line-heights, 'normal');
+}
+
+// Cards
+@mixin card {
+  padding: map-get($spacing, 'medium');
+  border-radius: 8px;
+  box-shadow: map-get($shadows, 'md');
+  background-color: map-get($colors, 'background');
+} 
