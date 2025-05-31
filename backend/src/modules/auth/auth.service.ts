@@ -1,4 +1,5 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, HttpException, HttpStatus } from '@nestjs/common';
+import { Response } from 'express';
 
 @Injectable()
 export class AuthService {
@@ -20,5 +21,34 @@ export class AuthService {
         const data = await response.json();
         return data.access_token;
     }
-    
+
+    async handleSalesforceOAuthCallback(
+        response: Response,
+        code: string,
+        state: string,
+    ) {
+        let stateJson = JSON.parse(state);
+        let authEndpoint = `${stateJson.baseURL}/services/oauth2/token`;
+        let data = `grant_type=authorization_code&code=${code}&client_id=${process.env.CLIENT_ID}&client_secret=${process.env.CLIENT_SECRET}&redirect_uri=${stateJson.redirectURI}`;
+        let requestOptions = {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded',
+            },
+            body: data,
+        };
+
+        try {
+            let oauthResponse = await fetch(authEndpoint, requestOptions);
+            let responseJson = await oauthResponse.json();
+            console.log('test', responseJson);
+            response.redirect('/api/oauth2/success');
+        } catch (error) {
+            console.log('error', error);
+            throw new HttpException(
+                'Failed to process OAuth callback',
+                HttpStatus.INTERNAL_SERVER_ERROR,
+            );
+        }
+    }
 }
