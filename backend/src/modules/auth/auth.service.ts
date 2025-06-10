@@ -58,7 +58,6 @@ export class AuthService {
                 );
             }
 
-            // Create new session with OAuth data
             await this.sessionService.createSession(sessionId, {
                 access_token: responseJson.access_token,
                 refresh_token: responseJson.refresh_token,
@@ -67,7 +66,7 @@ export class AuthService {
                 redirectURI: stateJson.redirectURI
             });
 
-            response.redirect('/api/oauth2/success');
+            response.redirect('http://localhost:8080/api/oauth2/success');
         } catch (error) {
             console.error('OAuth callback error:', error);
             throw new HttpException(

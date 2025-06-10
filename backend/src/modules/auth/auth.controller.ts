@@ -31,35 +31,6 @@ export class AuthController {
         }
     }
 
-    @Get('init')
-    async initOAuth(
-        @Req() req: Request,
-        @Query('baseURL') baseURL: string,
-        @Query('redirectURI') redirectURI: string,
-    ) {
-        if (!baseURL || !redirectURI) {
-            throw new HttpException(
-                'Missing required parameters',
-                HttpStatus.BAD_REQUEST,
-            );
-        }
-
-        const state = await this.authService.generateOAuthState(
-            req.sessionID,
-            baseURL,
-            redirectURI,
-        );
-
-        const clientId = this.authService.getClientId();
-        const authUrl = `${baseURL}/services/oauth2/authorize?` +
-            `response_type=code&` +
-            `client_id=${clientId}&` +
-            `redirect_uri=${encodeURIComponent(redirectURI)}&` +
-            `state=${encodeURIComponent(state)}`;
-
-        return { authUrl };
-    }
-
     @Get('callback')
     async handleSalesforceOAuthCallback(
         @Req() req: Request,
@@ -74,7 +45,15 @@ export class AuthController {
             );
         }
 
-        console.log('req.sessionID', req.sessionID);
+        console.log('Session Cookie Details:', {
+            id: req.sessionID,
+            cookie: req.session?.cookie,
+            headers: {
+                cookie: req.headers.cookie,
+                'set-cookie': response.getHeader('set-cookie')
+            }
+        });
+
         await this.authService.handleSalesforceOAuthCallback(
             response,
             code,
@@ -85,8 +64,14 @@ export class AuthController {
 
     @Get('success')
     async handleOAuthSuccess(@Req() req: Request) {
-        console.log('Session ID:', req.sessionID);
-        console.log('Session Cookie:', req.session);
+        console.log('Session Cookie Details:', {
+            id: req.sessionID,
+            cookie: req.session?.cookie,
+            headers: {
+                cookie: req.headers.cookie,
+                'set-cookie': req.headers['set-cookie']
+            }
+        });
         
         const session = await this.sessionService.getSession(req.sessionID);
         console.log('Redis Session Data:', session);
