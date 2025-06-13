@@ -58,7 +58,7 @@ export class AuthController {
             response,
             code,
             state,
-            req.sessionID,
+            req,
         );
     }
 

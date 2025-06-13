@@ -1,5 +1,5 @@
 import { Injectable, NestMiddleware } from '@nestjs/common';
-import { Request, Response, NextFunction } from 'express';
+import { Request, Response } from 'express';
 import * as session from 'express-session';
 import { sessionConfig } from '../config/redis.config';
 
@@ -20,7 +20,7 @@ export class SessionMiddleware implements NestMiddleware {
         this.sessionMiddleware = session(typedSessionConfig);
     }
 
-    use(req: Request, res: Response, next: NextFunction) {
+    use(req: Request, res: Response, next: () => void) {
         this.sessionMiddleware(req, res, next);
     }
 }

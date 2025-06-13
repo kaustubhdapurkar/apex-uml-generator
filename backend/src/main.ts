@@ -1,8 +1,6 @@
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { redisClient } from './config/redis.config';
-import * as session from 'express-session';
-import { sessionConfig } from './config/redis.config';
 
 async function bootstrap() {
     // Ensure Redis is connected before starting the application
@@ -17,15 +15,6 @@ async function bootstrap() {
 
     const app = await NestFactory.create(AppModule);
     app.setGlobalPrefix('api');
-    
-    // Configure session middleware
-    app.use(
-        session({
-            ...sessionConfig,
-            secret: process.env.SESSION_SECRET || 'your-secret-key',
-            name: 'sessionId', // This ensures consistent session ID naming
-        })
-    );
     
     if (process.env.NODE_ENV !== 'production') {
         app.enableCors({

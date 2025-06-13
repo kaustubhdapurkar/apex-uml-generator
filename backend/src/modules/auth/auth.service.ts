@@ -1,5 +1,5 @@
 import { Injectable, HttpException, HttpStatus } from '@nestjs/common';
-import { Response } from 'express';
+import { Response, Request } from 'express';
 import { SessionService } from './session.service';
 
 @Injectable()
@@ -34,9 +34,10 @@ export class AuthService {
         response: Response,
         code: string,
         state: string,
-        sessionId: string,
+        request: Request,
     ) {
         try {
+            request.session['test'] = 'test'
             let stateJson = JSON.parse(state);
             let authEndpoint = `${stateJson.baseURL}/services/oauth2/token`;
             let data = `grant_type=authorization_code&code=${code}&client_id=${process.env.CLIENT_ID}&client_secret=${process.env.CLIENT_SECRET}&redirect_uri=${stateJson.redirectURI}`;
@@ -58,7 +59,7 @@ export class AuthService {
                 );
             }
 
-            await this.sessionService.createSession(sessionId, {
+            await this.sessionService.createSession(request.sessionID, {
                 access_token: responseJson.access_token,
                 refresh_token: responseJson.refresh_token,
                 instance_url: responseJson.instance_url,
