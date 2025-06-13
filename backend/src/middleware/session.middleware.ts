@@ -8,13 +8,14 @@ export class SessionMiddleware implements NestMiddleware {
     private sessionMiddleware: ReturnType<typeof session>;
 
     constructor() {
-        if (!process.env.SESSION_SECRET) {
-            throw new Error('Session secret is required. Please set SESSION_SECRET environment variable.');
+        const secret = process.env.SESSION_SECRET;
+        if (!secret) {
+          throw new Error('Session secret is required. Please set SESSION_SECRET environment variable.');
         }
 
         const typedSessionConfig: session.SessionOptions = {
             ...sessionConfig,
-            secret: process.env.SESSION_SECRET
+            secret: secret
         };
 
         this.sessionMiddleware = session(typedSessionConfig);
