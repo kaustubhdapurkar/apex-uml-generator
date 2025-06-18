@@ -21,11 +21,13 @@
     "format": "prettier --write \"src/**/*.ts\""
   },
   "dependencies": {
+    "@jsforce/jsforce-node": "^3.8.2",
     "@nestjs/common": "^11.0.1",
     "@nestjs/config": "^4.0.2",
     "@nestjs/core": "^11.0.1",
     "@nestjs/platform-express": "^11.0.1",
     "@types/express-session": "^1.18.2",
+    "adm-zip": "^0.5.16",
     "connect-redis": "^8.1.0",
     "express": "^5.1.0",
     "express-session": "^1.18.1",
@@ -39,6 +41,7 @@
     "@nestjs/testing": "^11.0.1",
     "@swc/cli": "^0.6.0",
     "@swc/core": "^1.10.7",
+    "@types/adm-zip": "^0.5.7",
     "@types/express": "^5.0.0",
     "@types/jest": "^29.5.14",
     "@types/node": "^22.10.7",

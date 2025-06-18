@@ -4,6 +4,8 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { AuthModule } from './modules/auth/auth.module';
 import { SessionMiddleware } from './middleware/session.middleware';
+import { MetadataController } from './modules/metadata/metadata.controller';
+import { MetadataService } from './modules/metadata/metadata.service';
 
 @Module({
     imports: [
@@ -12,8 +14,8 @@ import { SessionMiddleware } from './middleware/session.middleware';
         }),
         AuthModule,
     ],
-    controllers: [AppController],
-    providers: [AppService],
+    controllers: [AppController, MetadataController],
+    providers: [AppService, MetadataService],
 })
 export class AppModule {
     configure(consumer: MiddlewareConsumer) {
