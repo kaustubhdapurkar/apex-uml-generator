@@ -50,7 +50,7 @@ const diagramContainer = ref<HTMLDivElement | null>(null);
 
 async function handleClick() {
     console.log('Button clicked!')
-    const response = await fetch('http://localhost:3000/api/metadata/retrieve', {
+    const response = await fetch(`${process.env.VUE_APP_API_URL}/metadata/retrieve`, {
         credentials: 'include',
         headers: {
             'Accept': 'application/json',

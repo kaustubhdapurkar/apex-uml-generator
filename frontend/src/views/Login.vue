@@ -57,20 +57,13 @@ const handleLogin = async () => {
         isLoading.value = true;
         error.value = '';
 
-        const baseURL = selectedEnv.value;
-        const authEndPoint = `${baseURL}/services/oauth2/authorize`;
-        const redirectURI = encodeURIComponent(
-            `http://localhost:8080/api/oauth2/callback`,
-        );
-        const state = JSON.stringify({
-            baseURL: baseURL,
-            redirectURI: redirectURI,
-        });
+        const loginUrl = ref(selectedEnv.value);
+        const redirectUri = `${process.env.VUE_APP_API_URL}/oauth2/callback`;
 
-        const response = await fetch('http://localhost:3000/api/oauth2/clientid', {
-            credentials: 'include',
+        const response = await fetch(`${process.env.VUE_APP_API_URL}/oauth2/clientid`, {
+            method: 'GET',
             headers: {
-                'Accept': 'application/json',
+                'Content-Type': 'application/json'
             }
         });
 
@@ -78,9 +71,10 @@ const handleLogin = async () => {
             throw new Error(`HTTP error! status: ${response.status}`);
         }
 
-        const { clientId } = await response.json();
-        const requestURL = `${authEndPoint}?client_id=${clientId}&response_type=code&redirect_uri=${redirectURI}&state=${state}&prompt=select_account`;
-        window.location.href = requestURL;
+        const data = await response.json();
+        const clientId = data.clientId;
+        const oauthUrl = `${loginUrl.value}/services/oauth2/authorize?client_id=${clientId}&redirect_uri=${redirectUri}&response_type=code`;
+        window.location.href = oauthUrl;
     } catch (err) {
         error.value = err instanceof Error ? err.message : 'An error occurred during login';
         console.error('Login error:', err);

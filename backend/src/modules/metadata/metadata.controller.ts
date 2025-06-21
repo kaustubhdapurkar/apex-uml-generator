@@ -10,7 +10,7 @@ export class MetadataController {
     @Get('retrieve')
     async retrieveMetadata(@Req() request: Request): Promise<any> {
         console.log('Retrieving metadata for request:', request);
-        this.metadataService.retrieveMetadata(request);
+        let apexClasses = await this.metadataService.retrieveMetadata(request);
         const apexCode = [
         `
             public class HelloWorld {
@@ -100,6 +100,6 @@ export class MetadataController {
                 }
             }
         `];
-        return JSON.parse(generateD3Json(apexCode));
+        return JSON.parse(generateD3Json(apexClasses));
     }
 }

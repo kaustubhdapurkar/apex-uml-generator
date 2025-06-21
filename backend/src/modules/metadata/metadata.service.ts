@@ -47,11 +47,7 @@ export class MetadataService {
             'unpackaged': {
                 'types': [
                     {
-                        'members': ['Account', 'Contact'],
-                        'name': 'CustomObject',
-                    },
-                    {
-                        'members': ['*'],
+                        'members': ['fflib_SObjectUnitOfWork', 'fflib_ISObjectUnitOfWork', 'fflib_SObjectSelector', 'fflib_ISObjectSelector', 'fflib_SObjects', 'fflib_Objects', 'fflib_ISObjects', 'fflib_SObjectDomain', 'fflib_SObjects', 'fflib_ISObjectDomain'],
                         'name': 'ApexClass',
                     },
                 ],
@@ -81,6 +77,6 @@ export class MetadataService {
 
         // Log or return the classes as needed
         console.log('Extracted Apex Classes:', apexClasses);
-        return apexClasses;
+        return apexClasses.map((cls) => cls.content);
     }
 }

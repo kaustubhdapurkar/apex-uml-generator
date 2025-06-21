@@ -1,17 +1,47 @@
 services:
+  # Backend service
   - type: web
-    name: apex-uml-generator
+    name: apex-uml-generator-api
     env: node
+    rootDir: backend
     buildCommand: npm install && npm run build
-    startCommand: npm start
+    startCommand: npm run start:prod
     envVars:
       - key: NODE_ENV
         value: production
       - key: PORT
         value: 3000
+      - key: REDIS_URL
+        fromService:
+          type: keyvalue
+          name: redis
+          property: connectionString
       - key: CLIENT_ID
         sync: false
       - key: CLIENT_SECRET
         sync: false
-    healthCheckPath: /api/health
-    autoDeploy: true 
+      - key: FRONTEND_URL
+        value: https://apex-uml-generator.onrender.com
+    healthCheckPath: /health
+    autoDeploy: true
+
+  # Frontend service
+  - type: static
+    name: apex-uml-generator
+    rootDir: frontend
+    buildCommand: npm install && npm run build
+    publishPath: ./dist
+    envVars:
+      - key: VUE_APP_API_URL
+        value: https://apex-uml-generator-api.onrender.com/api
+    rewrites:
+      - source: "/*"
+        destination: "/index.html"
+    autoDeploy: true
+
+  # Redis service
+  - type: keyvalue
+    name: redis
+    plan: free
+    ipAllowList: [] # only allow internal connections
+    maxmemoryPolicy: allkeys-lru 
