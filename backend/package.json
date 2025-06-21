@@ -7,6 +7,7 @@
   "license": "UNLICENSED",
   "scripts": {
     "build": "nest build",
+    "parse": "ts-node src/scripts/run_parser.ts",
     "start": "nest start",
     "start:dev": "nest start --watch",
     "start:debug": "nest start --debug --watch",
@@ -28,6 +29,8 @@
     "@nestjs/platform-express": "^11.0.1",
     "@types/express-session": "^1.18.2",
     "adm-zip": "^0.5.16",
+    "antlr4ts": "^0.5.0-alpha.4",
+    "apex-parser": "^1.0.0",
     "connect-redis": "^8.1.0",
     "express": "^5.1.0",
     "express-session": "^1.18.1",
@@ -44,10 +47,11 @@
     "@types/adm-zip": "^0.5.7",
     "@types/express": "^5.0.0",
     "@types/jest": "^29.5.14",
-    "@types/node": "^22.10.7",
+    "@types/node": "^22.15.32",
     "@types/supertest": "^6.0.2",
     "@typescript-eslint/eslint-plugin": "^8.33.0",
     "@typescript-eslint/parser": "^8.33.0",
+    "antlr4ts-cli": "^0.5.0-alpha.4",
     "eslint-config-prettier": "^10.1.5",
     "eslint-plugin-prettier": "^5.4.0",
     "globals": "^16.0.0",
@@ -59,7 +63,7 @@
     "ts-loader": "^9.5.2",
     "ts-node": "^10.9.2",
     "tsconfig-paths": "^4.2.0",
-    "typescript": "^5.7.3",
+    "typescript": "^5.8.3",
     "typescript-eslint": "^8.20.0"
   },
   "jest": {
