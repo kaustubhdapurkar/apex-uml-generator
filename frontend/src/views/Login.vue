@@ -3,12 +3,29 @@
         <div :class="$style.container">
             <h1 :class="$style.title">Login With Your Salesforce Org</h1>
             <form @submit.prevent="handleLogin" :class="$style.form">
-                <button
+                <div :class="$style.field">
+                    <label for="environment" :class="$style.label">Environment</label>
+                    <Dropdown
+                        id="environment"
+                        v-model="selectedEnv"
+                        :options="environments"
+                        optionLabel="name"
+                        optionValue="value"
+                        placeholder="Select Environment"
+                        :class="$style.select"
+                    />
+                </div>
+
+                <div v-if="error" :class="$style.error">
+                    {{ error }}
+                </div>
+
+                <Button
                     type="submit"
-                    :class="[$style.button, { [$style.loading]: isLoading }]"
-                >
-                    Login
-                </button>
+                    label="Login"
+                    :loading="isLoading"
+                    :class="$style.button"
+                />
             </form>
         </div>
     </div>
@@ -17,45 +34,59 @@
 <script setup lang="ts">
 import { ref } from 'vue';
 import { useRouter } from 'vue-router';
+import Button from 'primevue/button';
+import Dropdown from 'primevue/dropdown';
 
 const router = useRouter();
-const email = ref('');
-const password = ref('');
 const selectedEnv = ref('');
 const error = ref('');
 const isLoading = ref(false);
 
+const environments = [
+    { name: 'Production', value: 'https://login.salesforce.com' },
+    { name: 'Sandbox', value: 'https://test.salesforce.com' }
+];
+
 const handleLogin = async () => {
-    let baseURL;
-    baseURL = `https://login.salesforce.com`;
-    let authEndPoint = `${baseURL}/services/oauth2/authorize`;
-    let redirectURI = encodeURIComponent(
-        `http://localhost:3000/api/oauth2/callback`,
-    );
-    let state = JSON.stringify({
-        baseURL: baseURL,
-        redirectURI: redirectURI,
-    });
-    console.log(state);
-    let clientId = await fetch('http://localhost:3000/api/oauth2/clientid', {
-        credentials: 'include',
-        headers: {
-            'Accept': 'application/json',
-        }
-    }).then(response => {
+    if (!selectedEnv.value) {
+        error.value = 'Please select an environment';
+        return;
+    }
+
+    try {
+        isLoading.value = true;
+        error.value = '';
+
+        const baseURL = selectedEnv.value;
+        const authEndPoint = `${baseURL}/services/oauth2/authorize`;
+        const redirectURI = encodeURIComponent(
+            `http://localhost:8080/api/oauth2/callback`,
+        );
+        const state = JSON.stringify({
+            baseURL: baseURL,
+            redirectURI: redirectURI,
+        });
+
+        const response = await fetch('http://localhost:3000/api/oauth2/clientid', {
+            credentials: 'include',
+            headers: {
+                'Accept': 'application/json',
+            }
+        });
+
         if (!response.ok) {
             throw new Error(`HTTP error! status: ${response.status}`);
         }
-        return response.json();
-    }).then(data => data.clientId)
-    .catch(error => {
-        console.error('Error fetching client ID:', error);
-        throw error;
-    });
-    console.log(JSON.stringify(clientId));
-    let requestURL = `${authEndPoint}?client_id=${clientId}&response_type=code&redirect_uri=${redirectURI}&state=${state}&prompt=select_account`;
-    console.log(requestURL);
-    window.location.href = requestURL;
+
+        const { clientId } = await response.json();
+        const requestURL = `${authEndPoint}?client_id=${clientId}&response_type=code&redirect_uri=${redirectURI}&state=${state}&prompt=select_account`;
+        window.location.href = requestURL;
+    } catch (err) {
+        error.value = err instanceof Error ? err.message : 'An error occurred during login';
+        console.error('Login error:', err);
+    } finally {
+        isLoading.value = false;
+    }
 };
 </script>
 
@@ -100,45 +131,12 @@ const handleLogin = async () => {
     font-weight: map-get($font-weights, 'medium');
 }
 
-.control {
-    position: relative;
-}
-
-.input,
 .select {
-    @include text-base;
     width: 100%;
-    padding: map-get($spacing, 'small');
-    border: 1px solid rgba(map-get($colors, 'text'), 0.2);
-    border-radius: 4px;
-    background-color: rgba(255, 255, 255, 0.1);
-    color: map-get($colors, 'text');
-
-    &:focus {
-        outline: none;
-        border-color: map-get($colors, 'primary');
-    }
 }
 
 .button {
-    @include text-base;
     width: 100%;
-    padding: map-get($spacing, 'small');
-    background-color: map-get($colors, 'primary');
-    color: white;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-    font-weight: map-get($font-weights, 'medium');
-
-    &:hover {
-        opacity: 0.9;
-    }
-
-    &.loading {
-        opacity: 0.7;
-        cursor: not-allowed;
-    }
 }
 
 .error {
