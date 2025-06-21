@@ -7,6 +7,8 @@ services:
     buildCommand: npm install && npm run build
     startCommand: npm run start:prod
     envVars:
+      - key: NODE_OPTIONS
+        value: --max-old-space-size=420
       - key: NODE_ENV
         value: production
       - key: PORT
