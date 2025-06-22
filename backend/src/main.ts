@@ -15,7 +15,7 @@ async function bootstrap() {
   const corsOrigin = 'https://apex-uml-generator-production.up.railway.app/';
   // !!!!!!!!!!!!!! fix cors origin after debugging
   app.enableCors({
-    origin: '*',
+    origin: 'https://apex-uml-generator-production.up.railway.app',
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH'],
     credentials: true,
   });
