@@ -38,6 +38,7 @@ export class AuthController {
         @Query('code') code: string,
         @Query('state') state: string,
     ) {
+        console.log('inside callback');
         if (!code || !state) {
             throw new HttpException(
                 'Missing required parameters',
