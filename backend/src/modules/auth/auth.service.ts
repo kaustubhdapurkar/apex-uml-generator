@@ -67,6 +67,7 @@ export class AuthService {
                 redirectURI: stateJson.redirectURI
             });
 
+            console.log('redirecitng to callback');
             response.redirect('https://apex-uml-generator-production.up.railway.app/api/oauth2/success');
         } catch (error) {
             console.error('OAuth callback error:', error);
