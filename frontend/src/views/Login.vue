@@ -69,7 +69,7 @@ const handleLogin = async () => {
         });
 
         //const backendApiUrl = process.env.VUE_APP_API_URL || 'http://localhost:3000/api';
-        const backendApiUrl = 'apex-uml-generator-api-production.up.railway.app';
+        const backendApiUrl = 'https://apex-uml-generator-api-production.up.railway.app/api';
         console.log('backendapiurl', backendApiUrl);
         const response = await fetch(`${backendApiUrl}/oauth2/clientid`, {
             credentials: 'include',
