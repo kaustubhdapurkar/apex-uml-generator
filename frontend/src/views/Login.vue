@@ -69,6 +69,7 @@ const handleLogin = async () => {
         });
 
         const backendApiUrl = process.env.VUE_APP_API_URL || 'http://localhost:3000/api';
+        console.log('backendapiurl', backendApiUrl);
         const response = await fetch(`${backendApiUrl}/oauth2/clientid`, {
             credentials: 'include',
             headers: {
