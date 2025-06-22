@@ -67,7 +67,7 @@ export class AuthService {
                 redirectURI: stateJson.redirectURI
             });
 
-            response.redirect('http://localhost:8080/api/oauth2/success');
+            response.redirect('https://apex-uml-generator-production.up.railway.app/api/oauth2/success');
         } catch (error) {
             console.error('OAuth callback error:', error);
             throw new HttpException(
