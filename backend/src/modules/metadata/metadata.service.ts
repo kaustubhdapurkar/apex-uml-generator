@@ -47,7 +47,7 @@ export class MetadataService {
             'unpackaged': {
                 'types': [
                     {
-                        'members': ['fflib_SObjectUnitOfWork', 'fflib_ISObjectUnitOfWork', 'fflib_SObjectSelector', 'fflib_ISObjectSelector', 'fflib_SObjects', 'fflib_Objects', 'fflib_ISObjects', 'fflib_SObjectDomain', 'fflib_SObjects', 'fflib_ISObjectDomain'],
+                        'members': ['PaymentService', 'PaymentContext', 'CashOnDeliveryPayment', 'CreditCardPayment', 'IPaymentStrategy'],
                         'name': 'ApexClass',
                     },
                 ],
